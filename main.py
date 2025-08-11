@@ -5,7 +5,8 @@ import math
 import os, sqlite3
 from pathlib import Path
 
-DB_PATH = r"C:\\Users\\msamek\\PycharmProjects\\FastAPIProject\\zeus.db"
+
+DB_PATH = os.getenv("ZEUS_DB_PATH", r"C:\Users\msamek\PycharmProjects\FastAPIProject\zeus.db")
 TABLE = os.getenv("ZEUS_SQLITE_TABLE", "weather")
 TIME_COL = os.getenv("ZEUS_SQLITE_TIMECOL", "time")
 CORE_VARS = ["temperature_2m", "precipitation", "wind_speed_100m", "wind_direction_100m"]
