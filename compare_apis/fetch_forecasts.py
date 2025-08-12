@@ -169,7 +169,10 @@ def fetch_metno(lat: float, lon: float, start: datetime, end: datetime, user_age
 
 
 def fetch_visualcrossing(lat: float, lon: float, start: datetime, end: datetime, api_key: str) -> List[Tuple[str, str, float]]:
-    # Visual Crossing "timeline" with include=hours, metric units.
+    """
+    Visual Crossing 'timeline' (history+forecast) with robust time parsing via datetimeEpoch.
+    Zwraca: (time_iso, variable, value) w godzinnej rozdzielczości, jednostki metryczne.
+    """
     url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{lat},{lon}/{start.date()}/{(end - timedelta(seconds=1)).date()}"
     params = {
         "unitGroup": "metric",
@@ -177,13 +180,13 @@ def fetch_visualcrossing(lat: float, lon: float, start: datetime, end: datetime,
         "key": api_key,
         "contentType": "json",
     }
-    r = requests.get(url, params=params, timeout=30)
+    r = requests.get(url, params=params, timeout=60)
     r.raise_for_status()
     data = r.json()
     rows = []
     for day in data.get("days", []):
         for h in day.get("hours", []):
-            # Używamy timestampu, żeby ominąć błędy parsowania ISO
+            # <= KLUCZOWE: preferujemy epoch
             if "datetimeEpoch" in h:
                 t = datetime.fromtimestamp(h["datetimeEpoch"], tz=timezone.utc)
             else:
@@ -193,48 +196,98 @@ def fetch_visualcrossing(lat: float, lon: float, start: datetime, end: datetime,
             if not (start <= t < end):
                 continue
             iso = t.strftime(ISO)
+
+            # temp (°C)
             if "temp" in h:
                 rows.append((iso, "temperature_2m", float(h["temp"])))
-            if "precip" in h and h["precip"] is not None:
+            # precip (mm/h)
+            if h.get("precip") is not None:
                 rows.append((iso, "precipitation", float(h["precip"])))
-            if "windspeed" in h and h["windspeed"] is not None:
-                rows.append((iso, "wind_speed_10m", float(h["windspeed"]) / 3.6))  # km/h -> m/s
-            if "winddir" in h and h["winddir"] is not None:
+            # wind 10m (m/s) z km/h
+            if h.get("windspeed") is not None:
+                rows.append((iso, "wind_speed_10m", float(h["windspeed"]) / 3.6))
+            # wind direction 10m (deg)
+            if h.get("winddir") is not None:
                 rows.append((iso, "wind_direction_10m", float(h["winddir"])))
     return rows
 
 
-def fetch_openweather(lat: float, lon: float, start: datetime, end: datetime, api_key: str) -> List[Tuple[str, str, float]]:
-    # OpenWeather 5-day/3-hour forecast (free tier), metric units.
+
+
+def fetch_openweather(lat: float, lon: float, start: datetime, end: datetime, api_key: str):
+    """
+    OpenWeather:
+      - preferuje One Call 3.0 /hourly (do ~48h); ma 'rain': {'1h': mm}, 'snow': {'1h': mm}
+      - fallback: 5 day / 3 hour forecast (dzielimy 'rain.3h'/'snow.3h' przez 3 => mm/h)
+    Zwraca listę (time_iso, variable, value).
+    """
+    rows = []
+    try:
+        # 1) Spróbuj One Call (godzinowa na ~48h)
+        if (end - start) <= timedelta(hours=48):
+            url = "https://api.openweathermap.org/data/3.0/onecall"
+            params = {
+                "lat": lat, "lon": lon, "appid": api_key, "units": "metric",
+                "exclude": "minutely,daily,current,alerts",
+            }
+            r = requests.get(url, params=params, timeout=30)
+            r.raise_for_status()
+            data = r.json()
+            for h in data.get("hourly", []):
+                t = datetime.fromtimestamp(h["dt"], tz=timezone.utc)
+                if not (start <= t < end):
+                    continue
+                iso = t.strftime(ISO)
+                # temperatura
+                if h.get("temp") is not None:
+                    rows.append((iso, "temperature_2m", float(h["temp"])))
+                # wiatr 10 m
+                if h.get("wind_speed") is not None:
+                    rows.append((iso, "wind_speed_10m", float(h["wind_speed"])))
+                if h.get("wind_deg") is not None:
+                    rows.append((iso, "wind_direction_10m", float(h["wind_deg"])))
+                # opady (mm/h): rain.1h + snow.1h
+                pr = 0.0
+                if isinstance(h.get("rain"), dict) and "1h" in h["rain"]:
+                    pr += float(h["rain"]["1h"])
+                if isinstance(h.get("snow"), dict) and "1h" in h["snow"]:
+                    pr += float(h["snow"]["1h"])
+                # dopisz nawet 0.0, żeby mieć pełną serię
+                rows.append((iso, "precipitation", float(pr)))
+            return rows
+    except Exception as e:
+        # jeśli One Call nieosiągalny (np. plan), przejdź do fallbacku
+        print(f"  [openweather] One Call fallback: {e}")
+
+    # 2) Fallback: 5-dniowa prognoza co 3h
     url = "https://api.openweathermap.org/data/2.5/forecast"
     params = {"lat": lat, "lon": lon, "appid": api_key, "units": "metric"}
     r = requests.get(url, params=params, timeout=30)
     r.raise_for_status()
     data = r.json()
-    rows = []
-    for it in data.get("list", []):
-        t = datetime.fromtimestamp(it["dt"], tz=timezone.utc)
+    for e3 in data.get("list", []):
+        t = datetime.fromtimestamp(e3["dt"], tz=timezone.utc)
         if not (start <= t < end):
             continue
         iso = t.strftime(ISO)
-        main = it.get("main", {})
-        wind = it.get("wind", {})
-        rain = it.get("rain", {})
-        snow = it.get("snow", {})
-        if "temp" in main:
+        main = e3.get("main", {})
+        if main.get("temp") is not None:
             rows.append((iso, "temperature_2m", float(main["temp"])))
-        # Precip in mm over 3h; we convert to per-hour average
-        pr = None
-        if isinstance(rain, dict) and "3h" in rain:
-            pr = float(rain["3h"]) / 3.0
-        elif isinstance(snow, dict) and "3h" in snow:
-            pr = float(snow["3h"]) / 3.0
-        if pr is not None:
-            rows.append((iso, "precipitation", pr))
-        if "speed" in wind:
-            rows.append((iso, "wind_speed_10m", float(wind["speed"])))  # already m/s
-        if "deg" in wind:
+        wind = e3.get("wind", {})
+        if wind.get("speed") is not None:
+            rows.append((iso, "wind_speed_10m", float(wind["speed"])))
+        if wind.get("deg") is not None:
             rows.append((iso, "wind_direction_10m", float(wind["deg"])))
+        # opad 3h -> mm/h (dzielimy przez 3)
+        pr_3h = 0.0
+        rain = e3.get("rain", {})
+        snow = e3.get("snow", {})
+        if isinstance(rain, dict):
+            # '3h' lub e.g. '1h' w niektórych odpowiedziach
+            pr_3h += float(rain.get("3h", rain.get("1h", 0.0)))
+        if isinstance(snow, dict):
+            pr_3h += float(snow.get("3h", snow.get("1h", 0.0)))
+        rows.append((iso, "precipitation", float(pr_3h) / 3.0))
     return rows
 
 
