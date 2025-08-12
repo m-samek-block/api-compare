@@ -137,6 +137,8 @@ def run():
     # Parametr wzoru potęgowego do 10m→100m
     ap.add_argument("--wind-alpha", type=float, default=0.143,
                     help="Parametr α w U100 = U10*(100/10)^α (domyślnie 0.143).")
+    ap.add_argument("--precip-thresh", type=float, default=0.1,
+                    help="Próg zdarzenia opad (mm/h) do metryk detekcji (POD/FAR/CSI).")
 
     args = ap.parse_args()
 
@@ -304,6 +306,142 @@ def run():
     summary_path = outdir / "era5_comparison_summary.csv"
     full.to_csv(summary_path, index=False)
     print(f"[OK] Wrote summary: {summary_path}")
+
+    # ========== ANALIZA PER API (wzorce/tendencje) ==========
+    analysis_dir = outdir / "analysis"
+    analysis_dir.mkdir(parents=True, exist_ok=True)
+
+    if 'merged' in locals() and not merged.empty:
+        m2 = merged.copy()
+
+        # (1) błąd kątowy dla kierunku wiatru (poprawne na okręgu):
+        is_wdir = m2["variable"].str.contains("wind_direction")
+        if is_wdir.any():
+            ang = ((m2.loc[is_wdir, "pred_value"] - m2.loc[is_wdir, "era5_value"] + 180.0) % 360.0) - 180.0
+            m2.loc[is_wdir, "error_angle"] = ang
+        m2["error_angle"] = m2["error_angle"].fillna(m2["error"])
+
+        # (2) regresja liniowa: pred = slope*ERA5 + intercept (skala/offset)
+        def linfit(x, y):
+            x = np.asarray(x, float);
+            y = np.asarray(y, float)
+            if x.size < 3: return np.nan, np.nan, np.nan
+            A = np.vstack([x, np.ones_like(x)]).T
+            slope, intercept = np.linalg.lstsq(A, y, rcond=None)[0]
+            yhat = slope * x + intercept
+            ss_res = np.sum((y - yhat) ** 2)
+            ss_tot = np.sum((y - np.mean(y)) ** 2)
+            r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else np.nan
+            return float(slope), float(intercept), float(r2)
+
+        # (3) dobowy wzorzec biasu
+        m2["hour"] = pd.to_datetime(m2["time"]).dt.hour
+
+        rows = []
+        for (prov, var), df in m2.groupby(["provider", "variable"]):
+            if df.empty:
+                continue
+            # metryki na error_angle
+            bias = float(np.mean(df["error_angle"]))
+            mae = float(np.mean(np.abs(df["error_angle"])))
+            rmse = float(np.sqrt(np.mean(np.square(df["error_angle"]))))
+            sl, itc, r2 = linfit(df["era5_value"], df["pred_value"])
+
+            # dobowy wzorzec
+            byh = df.groupby("hour")["error_angle"].mean()
+            if len(byh) > 0:
+                diurnal_amp = float(byh.max() - byh.min())
+                peak_hour = int(byh.abs().idxmax())
+            else:
+                diurnal_amp = np.nan
+                peak_hour = np.nan
+
+            rows.append({
+                "provider": prov, "variable": var,
+                "bias": bias, "MAE": mae, "RMSE": rmse,
+                "slope": sl, "intercept": itc, "R2": r2,
+                "diurnal_amp": diurnal_amp, "diurnal_peak_hour": peak_hour,
+            })
+
+        patterns = pd.DataFrame(rows)
+
+        # (4) metryki detekcji opadu (POD/FAR/CSI) per provider
+        thr = args.precip_thresh
+        ev_rows = []
+        for prov, dfp in m2[m2["variable"] == "precipitation"].groupby("provider"):
+            if dfp.empty:
+                ev_rows.append({"provider": prov, "POD": np.nan, "FAR": np.nan, "CSI": np.nan})
+                continue
+            pred_ev = (dfp["pred_value"] > thr).to_numpy()
+            era_ev = (dfp["era5_value"] > thr).to_numpy()
+            TP = int(np.sum(pred_ev & era_ev))
+            FP = int(np.sum(pred_ev & ~era_ev))
+            FN = int(np.sum(~pred_ev & era_ev))
+            denom_pod = (TP + FN)
+            denom_far = (TP + FP)
+            denom_csi = (TP + FP + FN)
+            POD = (TP / denom_pod) if denom_pod > 0 else np.nan  # Probability of Detection
+            FAR = (FP / denom_far) if denom_far > 0 else np.nan  # False Alarm Ratio
+            CSI = (TP / denom_csi) if denom_csi > 0 else np.nan  # Critical Success Index
+            ev_rows.append({"provider": prov, "POD": POD, "FAR": FAR, "CSI": CSI})
+
+        ev_df = pd.DataFrame(ev_rows)
+
+        # (5) dołącz coverage/dorobione z tabeli "full"
+        #    kolumny: provider (API), zmienna, pokrycie%, dorobione%
+        slim = full.rename(columns={
+            full.columns[0]: "provider",
+            full.columns[1]: "variable",
+            full.columns[4]: "pokrycie%",
+            full.columns[6]: "dorobione%",
+        })[["provider", "variable", "pokrycie%", "dorobione%"]]
+
+        patterns = patterns.merge(slim, on=["provider", "variable"], how="left")
+
+        # zapisz zbiorczy CSV
+        patterns_path = analysis_dir / "api_patterns.csv"
+        patterns.to_csv(patterns_path, index=False)
+
+        # zrób CSV z metrykami opadowymi
+        ev_path = analysis_dir / "precip_detection_metrics.csv"
+        ev_df.to_csv(ev_path, index=False)
+
+        print(f"[OK] API patterns: {patterns_path}")
+        print(f"[OK] Precip detection: {ev_path}")
+
+        # (6) proste wykresy pomocnicze – regresja i dobowy bias per zmienna/prov
+        #    (rysujemy tylko gdy są dane)
+        for (prov, var), df in m2.groupby(["provider", "variable"]):
+            if df.empty:
+                continue
+            # scatter z linią regresji
+            plt.figure()
+            plt.scatter(df["era5_value"], df["pred_value"], s=6, alpha=0.6)
+            # linia 1:1
+            mn = float(np.nanmin([df["era5_value"].min(), df["pred_value"].min()]))
+            mx = float(np.nanmax([df["era5_value"].max(), df["pred_value"].max()]))
+            plt.plot([mn, mx], [mn, mx], linewidth=1)
+            # linia regresji
+            sl, itc, _ = linfit(df["era5_value"], df["pred_value"])
+            if not np.isnan(sl):
+                xx = np.linspace(mn, mx, 50)
+                yy = sl * xx + itc
+                plt.plot(xx, yy, linewidth=1)
+            plt.xlabel("ERA5");
+            plt.ylabel(f"{prov}")
+            plt.title(f"Regresja: {prov} — {var} (y = {sl:.2f}x + {itc:.2f})")
+            safe_savefig(analysis_dir / f"regression_{prov}_{var}.png")
+
+            # dobowy bias (na error_angle)
+            byh = df.groupby("hour")["error_angle"].mean()
+            if len(byh) > 0:
+                plt.figure()
+                plt.plot(byh.index, byh.values, marker="o")
+                plt.axhline(0, linewidth=1)
+                plt.xlabel("Godzina (UTC)");
+                plt.ylabel("Średni błąd")
+                plt.title(f"Bias dobowy: {prov} — {var}")
+                safe_savefig(analysis_dir / f"diurnal_bias_{prov}_{var}.png")
 
     # --------------- PLOTS ------------------ #
     plots_dir = outdir / "plots"
