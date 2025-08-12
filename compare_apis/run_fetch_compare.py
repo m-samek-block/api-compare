@@ -9,7 +9,6 @@ START = "2025-08-12T00:00:00Z"
 END   = "2025-08-19T00:00:00Z"
 PROVIDERS = "openmeteo,metno,openweather,weatherapi,visualcrossing"
 WIND_ALPHA = "0.143"
-PRECIP_THR = "0.1"
 
 here = pathlib.Path(__file__).resolve().parent
 dane = here / "dane"; dane.mkdir(exist_ok=True)
@@ -57,7 +56,6 @@ compare_cmd = [
     "--era5", str(dane / "era5.csv"),
     "--outdir", str(wyniki),
     "--wind-alpha", WIND_ALPHA,
-    "--precip-thresh", PRECIP_THR,
 ]
 if OPENWEATHER: compare_cmd += ["--openweather-key", OPENWEATHER]
 if WEATHERAPI:  compare_cmd += ["--weatherapi-key", WEATHERAPI]
