@@ -1,0 +1,74 @@
+[
+  {
+    "location": "valencia_coast",
+    "lat": 39.4699,
+    "lon": -0.3763,
+    "status": "success",
+    "duration": 1.0936753749847412,
+    "stdout": "[INFO] Data hash: ddc515c16627\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "gdansk_coast",
+    "lat": 54.352,
+    "lon": 18.6466,
+    "status": "success",
+    "duration": 1.1171092987060547,
+    "stdout": "[INFO] Data hash: b79028c3ba85\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "hamburg_coast",
+    "lat": 53.5511,
+    "lon": 9.9937,
+    "status": "success",
+    "duration": 1.1465339660644531,
+    "stdout": "[INFO] Data hash: 3750edadebf1\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "warszawa_inland",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "status": "success",
+    "duration": 1.1540565490722656,
+    "stdout": "[INFO] Data hash: 5ad65de53ab7\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "nice_coast",
+    "lat": 43.7102,
+    "lon": 7.262,
+    "status": "success",
+    "duration": 1.1951277256011963,
+    "stdout": "[INFO] Data hash: aad430d1465b\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "munich_inland",
+    "lat": 48.1351,
+    "lon": 11.582,
+    "status": "success",
+    "duration": 1.2207937240600586,
+    "stdout": "[INFO] Data hash: 8247466a0736\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "madrid_inland",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "status": "success",
+    "duration": 1.0426595211029053,
+    "stdout": "[INFO] Data hash: 134382e654c7\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "prague_inland",
+    "lat": 50.0755,
+    "lon": 14.4378,
+    "status": "success",
+    "duration": 1.0418634414672852,
+    "stdout": "[INFO] Data hash: f5edda21dc5a\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  }
+]

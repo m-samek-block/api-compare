@@ -1,0 +1,92 @@
+[
+  {
+    "location": "gdansk",
+    "lat": 54.352,
+    "lon": 18.6466,
+    "status": "success",
+    "duration": 1.3418149948120117,
+    "stdout": "[INFO] Data hash: b79028c3ba85\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "krakow",
+    "lat": 50.0647,
+    "lon": 19.945,
+    "status": "success",
+    "duration": 1.3421056270599365,
+    "stdout": "[INFO] Data hash: 70045aa6b8b9\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "warszawa",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "status": "success",
+    "duration": 1.342860460281372,
+    "stdout": "[INFO] Data hash: 5ad65de53ab7\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "wroclaw",
+    "lat": 51.1079,
+    "lon": 17.0385,
+    "status": "success",
+    "duration": 1.3646056652069092,
+    "stdout": "[INFO] Data hash: 5558a0b97237\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "szczecin",
+    "lat": 53.4285,
+    "lon": 14.5528,
+    "status": "success",
+    "duration": 1.3823025226593018,
+    "stdout": "[INFO] Data hash: d97824ecc183\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "poznan",
+    "lat": 52.4064,
+    "lon": 16.9252,
+    "status": "success",
+    "duration": 1.399137020111084,
+    "stdout": "[INFO] Data hash: 6365402ecc96\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "lublin",
+    "lat": 51.2465,
+    "lon": 22.5684,
+    "status": "success",
+    "duration": 1.1892979145050049,
+    "stdout": "[INFO] Data hash: ecbe595b139a\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "bydgoszcz",
+    "lat": 53.1235,
+    "lon": 18.0084,
+    "status": "success",
+    "duration": 1.2159526348114014,
+    "stdout": "[INFO] Data hash: 9d320cf3b0ed\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "katowice",
+    "lat": 50.2649,
+    "lon": 19.0238,
+    "status": "success",
+    "duration": 1.23106050491333,
+    "stdout": "[INFO] Data hash: da19db232fd1\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "rzeszow",
+    "lat": 50.0412,
+    "lon": 21.9991,
+    "status": "success",
+    "duration": 1.127892017364502,
+    "stdout": "[INFO] Data hash: 0b92ce123401\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  }
+]

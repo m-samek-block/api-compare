@@ -1,0 +1,92 @@
+[
+  {
+    "location": "warsaw",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "status": "success",
+    "duration": 1.1150484085083008,
+    "stdout": "[INFO] Data hash: 5ad65de53ab7\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "paris",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "status": "success",
+    "duration": 1.1141350269317627,
+    "stdout": "[INFO] Data hash: 7f4b5558370d\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "berlin",
+    "lat": 52.52,
+    "lon": 13.405,
+    "status": "success",
+    "duration": 1.1380207538604736,
+    "stdout": "[INFO] Data hash: acc2c80a7cef\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "rome",
+    "lat": 41.9028,
+    "lon": 12.4964,
+    "status": "success",
+    "duration": 1.1205973625183105,
+    "stdout": "[INFO] Data hash: fba21427ee3d\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "madrid",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "status": "success",
+    "duration": 1.1152184009552002,
+    "stdout": "[INFO] Data hash: 134382e654c7\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "london",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "status": "success",
+    "duration": 1.1448523998260498,
+    "stdout": "[INFO] Data hash: 06e62a4dbbb6\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "amsterdam",
+    "lat": 52.3676,
+    "lon": 4.9041,
+    "status": "success",
+    "duration": 1.0906567573547363,
+    "stdout": "[INFO] Data hash: 9d6dfeaabf90\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "prague",
+    "lat": 50.0755,
+    "lon": 14.4378,
+    "status": "success",
+    "duration": 1.087033987045288,
+    "stdout": "[INFO] Data hash: f5edda21dc5a\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "vienna",
+    "lat": 48.2082,
+    "lon": 16.3738,
+    "status": "success",
+    "duration": 1.1393568515777588,
+    "stdout": "[INFO] Data hash: 88d30378f71a\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  },
+  {
+    "location": "stockholm",
+    "lat": 59.3293,
+    "lon": 18.0686,
+    "status": "success",
+    "duration": 0.9136254787445068,
+    "stdout": "[INFO] Data hash: e7f52e788d18\n[ERROR] No ERA5 data available\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,402 @@
+{
+  "Random_001_Europe": [
+    49.2869,
+    12.7737
+  ],
+  "Random_002_Europe": [
+    57.3927,
+    16.5878
+  ],
+  "Random_003_North_America": [
+    36.5395,
+    -83.1842
+  ],
+  "Random_004_Australia": [
+    -37.5559,
+    159.8958
+  ],
+  "Random_005_Australia": [
+    -31.594,
+    153.2954
+  ],
+  "Random_006_Australia": [
+    -18.8422,
+    118.0627
+  ],
+  "Random_007_Africa": [
+    22.5059,
+    -7.2788
+  ],
+  "Random_008_Africa": [
+    -7.7873,
+    25.4257
+  ],
+  "Random_009_Asia": [
+    40.1007,
+    95.8427
+  ],
+  "Random_010_North_America": [
+    67.6134,
+    -74.3032
+  ],
+  "Random_011_South_America": [
+    -22.0135,
+    -77.3911
+  ],
+  "Random_012_North_America": [
+    63.0636,
+    -82.283
+  ],
+  "Random_013_Europe": [
+    64.7234,
+    19.3348
+  ],
+  "Random_014_Africa": [
+    -30.6144,
+    47.6016
+  ],
+  "Random_015_Europe": [
+    41.8172,
+    3.3112
+  ],
+  "Random_016_South_America": [
+    9.9285,
+    -68.4329
+  ],
+  "Random_017_Africa": [
+    35.14,
+    25.315
+  ],
+  "Random_018_North_America": [
+    55.2575,
+    -86.1182
+  ],
+  "Random_019_Asia": [
+    29.4725,
+    111.7259
+  ],
+  "Random_020_North_America": [
+    42.4603,
+    -61.6533
+  ],
+  "Random_021_Europe": [
+    65.379,
+    -6.2591
+  ],
+  "Random_022_Africa": [
+    21.1917,
+    48.9043
+  ],
+  "Random_023_Asia": [
+    34.7983,
+    134.561
+  ],
+  "Random_024_Africa": [
+    -22.7966,
+    33.9464
+  ],
+  "Random_025_North_America": [
+    16.4172,
+    -153.9457
+  ],
+  "Random_026_North_America": [
+    26.7741,
+    -159.7552
+  ],
+  "Random_027_South_America": [
+    -17.6322,
+    -46.294
+  ],
+  "Random_028_South_America": [
+    -13.3609,
+    -63.9003
+  ],
+  "Random_029_South_America": [
+    -54.9083,
+    -81.7374
+  ],
+  "Random_030_North_America": [
+    67.9412,
+    -167.1409
+  ],
+  "Random_031_Europe": [
+    49.9272,
+    16.1961
+  ],
+  "Random_032_Asia": [
+    17.0309,
+    94.9722
+  ],
+  "Random_033_Australia": [
+    -35.8954,
+    116.6916
+  ],
+  "Random_034_Asia": [
+    12.4534,
+    68.2639
+  ],
+  "Random_035_Asia": [
+    44.3141,
+    138.889
+  ],
+  "Random_036_Asia": [
+    59.1123,
+    79.2337
+  ],
+  "Random_037_Australia": [
+    -26.9782,
+    137.5982
+  ],
+  "Random_038_Africa": [
+    16.9445,
+    -4.3423
+  ],
+  "Random_039_Australia": [
+    -34.6197,
+    138.4023
+  ],
+  "Random_040_Asia": [
+    44.339,
+    69.8125
+  ],
+  "Random_041_South_America": [
+    -30.8202,
+    -65.046
+  ],
+  "Random_042_North_America": [
+    43.6022,
+    -163.1504
+  ],
+  "Random_043_South_America": [
+    -16.6731,
+    -48.8566
+  ],
+  "Random_044_Australia": [
+    -11.4906,
+    154.3558
+  ],
+  "Random_045_Australia": [
+    -22.3021,
+    139.7483
+  ],
+  "Random_046_Africa": [
+    34.3357,
+    34.8149
+  ],
+  "Random_047_South_America": [
+    13.0205,
+    -44.8751
+  ],
+  "Random_048_Australia": [
+    -12.2136,
+    123.8457
+  ],
+  "Random_049_Asia": [
+    38.0405,
+    120.1902
+  ],
+  "Random_050_Asia": [
+    43.9538,
+    103.1867
+  ],
+  "Random_051_North_America": [
+    24.3151,
+    -160.0301
+  ],
+  "Random_052_Asia": [
+    37.9268,
+    162.6197
+  ],
+  "Random_053_South_America": [
+    -47.1173,
+    -65.0695
+  ],
+  "Random_054_Australia": [
+    -13.0527,
+    156.7276
+  ],
+  "Random_055_South_America": [
+    -48.9891,
+    -65.9893
+  ],
+  "Random_056_Europe": [
+    62.8811,
+    15.3379
+  ],
+  "Random_057_Europe": [
+    60.4584,
+    -3.5151
+  ],
+  "Random_058_Australia": [
+    -39.3782,
+    124.309
+  ],
+  "Random_059_Asia": [
+    25.6355,
+    77.0558
+  ],
+  "Random_060_Africa": [
+    27.2183,
+    28.1401
+  ],
+  "Random_061_Africa": [
+    22.4835,
+    -13.0633
+  ],
+  "Random_062_North_America": [
+    29.918,
+    -154.7873
+  ],
+  "Random_063_Africa": [
+    3.5071,
+    0.8766
+  ],
+  "Random_064_Europe": [
+    44.9592,
+    7.1976
+  ],
+  "Random_065_Europe": [
+    58.6472,
+    -8.9302
+  ],
+  "Random_066_Australia": [
+    -12.741,
+    117.9882
+  ],
+  "Random_067_Asia": [
+    41.0173,
+    77.9676
+  ],
+  "Random_068_Europe": [
+    69.1899,
+    -3.6448
+  ],
+  "Random_069_Africa": [
+    -6.7009,
+    5.5569
+  ],
+  "Random_070_Europe": [
+    46.0841,
+    15.2123
+  ],
+  "Random_071_Europe": [
+    68.3029,
+    -1.3484
+  ],
+  "Random_072_North_America": [
+    23.8102,
+    -80.4591
+  ],
+  "Random_073_South_America": [
+    -49.0556,
+    -80.8739
+  ],
+  "Random_074_Australia": [
+    -13.2281,
+    135.8768
+  ],
+  "Random_075_Asia": [
+    34.4971,
+    114.1803
+  ],
+  "Random_076_Asia": [
+    61.4552,
+    97.5052
+  ],
+  "Random_077_Asia": [
+    43.3626,
+    86.6233
+  ],
+  "Random_078_Asia": [
+    10.8878,
+    62.4854
+  ],
+  "Random_079_Australia": [
+    -39.5485,
+    117.1712
+  ],
+  "Random_080_South_America": [
+    -54.4227,
+    -78.2182
+  ],
+  "Random_081_Africa": [
+    -16.5073,
+    4.6432
+  ],
+  "Random_082_Europe": [
+    54.9559,
+    10.9417
+  ],
+  "Random_083_Asia": [
+    56.6604,
+    126.842
+  ],
+  "Random_084_Africa": [
+    -14.9747,
+    50.0989
+  ],
+  "Random_085_Europe": [
+    43.849,
+    29.9296
+  ],
+  "Random_086_North_America": [
+    57.8728,
+    -93.9693
+  ],
+  "Random_087_Europe": [
+    56.8946,
+    20.1351
+  ],
+  "Random_088_Australia": [
+    -26.0079,
+    157.4881
+  ],
+  "Random_089_South_America": [
+    -2.7265,
+    -56.3093
+  ],
+  "Random_090_Africa": [
+    21.7173,
+    -17.7672
+  ],
+  "Random_091_Africa": [
+    -10.8043,
+    -2.3981
+  ],
+  "Random_092_South_America": [
+    14.5244,
+    -80.4624
+  ],
+  "Random_093_North_America": [
+    54.0334,
+    -158.1137
+  ],
+  "Random_094_South_America": [
+    -8.5437,
+    -37.3138
+  ],
+  "Random_095_South_America": [
+    -17.5261,
+    -59.9484
+  ],
+  "Random_096_Europe": [
+    62.7504,
+    37.975
+  ],
+  "Random_097_Asia": [
+    26.3957,
+    111.1582
+  ],
+  "Random_098_Asia": [
+    55.1604,
+    108.5616
+  ],
+  "Random_099_North_America": [
+    51.0807,
+    -55.5098
+  ],
+  "Random_100_South_America": [
+    -34.7206,
+    -75.401
+  ]
+}
